@@ -16,6 +16,7 @@ const TimeCapsuleForm: React.FC<TimeCapsuleFormProps> = ({ onSubmit }) => {
   const [letterContent, setLetterContent] = useState('');
   const [email, setEmail] = useState('');
   const [selectedDays, setSelectedDays] = useState(90); // Default to 3 months
+  const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null); // For specific date & time
   const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -49,7 +50,7 @@ const TimeCapsuleForm: React.FC<TimeCapsuleFormProps> = ({ onSubmit }) => {
       console.log({
         letterContent,
         email,
-        deliveryDate: new Date(Date.now() + selectedDays * 24 * 60 * 60 * 1000),
+        deliveryDate: selectedDateTime || new Date(Date.now() + selectedDays * 24 * 60 * 60 * 1000),
         mood: selectedMood
       });
       
@@ -69,7 +70,9 @@ const TimeCapsuleForm: React.FC<TimeCapsuleFormProps> = ({ onSubmit }) => {
         <div className="space-y-4">
           <DateSelector 
             selectedDays={selectedDays} 
-            onChange={setSelectedDays} 
+            onChange={setSelectedDays}
+            selectedDateTime={selectedDateTime}
+            onSpecificDateTimeChange={setSelectedDateTime} 
           />
           
           <div className="space-y-2 mt-6">
